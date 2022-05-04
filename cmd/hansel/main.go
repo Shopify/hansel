@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/go-logr/zerologr"
-	_ "github.com/goreleaser/nfpm/v2/deb"
+
 	"github.com/rs/zerolog"
 	"github.com/thepwagner/hansel/internal/cli"
 )
