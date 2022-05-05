@@ -146,18 +146,19 @@ func makePackage(ctx *cli.Context, log logr.Logger, info *nfpm.Info, packager st
 	var installCmd []string
 	switch packager {
 	case "apk":
-		installCmd = []string{"/usr/bin/apk", "add", "--allow-untrusted", "--no-network", fn}
+		installCmd = []string{"/sbin/apk", "add", "--allow-untrusted", "--no-network", fn}
 	case "deb":
 		installCmd = []string{"/usr/bin/dpkg", "-i", fn}
 	default:
 		return fmt.Errorf("unsupported packager: %s", packager)
 	}
 
+	log.Info("installing package", "command", installCmd)
 	cmd := exec.CommandContext(ctx.Context, installCmd[0], installCmd[1:]...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("installing apk package: %w", err)
+		return fmt.Errorf("installing package: %w", err)
 	}
 	return nil
 }
