@@ -4,7 +4,6 @@ import (
 	"os"
 
 	"github.com/go-logr/zerologr"
-
 	"github.com/rs/zerolog"
 	"github.com/thepwagner/hansel/internal/cli"
 )
