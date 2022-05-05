@@ -146,7 +146,7 @@ func makePackage(ctx *cli.Context, log logr.Logger, info *nfpm.Info, packager st
 	var installCmd []string
 	switch packager {
 	case "apk":
-		installCmd = []string{"/sbin/apk", "add", "--allow-untrusted", "--no-network", fn}
+		installCmd = []string{"/sbin/apk", "add", "--allow-untrusted", "-repositories-file=/dev/null", "--no-network", fn}
 	case "deb":
 		installCmd = []string{"/usr/bin/dpkg", "-i", fn}
 	default:
