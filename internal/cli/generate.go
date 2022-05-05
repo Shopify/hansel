@@ -30,19 +30,19 @@ const (
 )
 
 var GenerateFlags = []cli.Flag{
-	&cli.StringFlag{Name: pkgName},
-	&cli.StringFlag{Name: pkgArch},
-	&cli.StringFlag{Name: pkgVersion},
-	&cli.StringFlag{Name: pkgMaintainer},
-	&cli.StringFlag{Name: pkgDescription, Value: "hansel virtual package"},
+	&cli.StringFlag{Name: pkgName, Usage: "package name"},
+	&cli.StringFlag{Name: pkgArch, Usage: "package architecture"},
+	&cli.StringFlag{Name: pkgVersion, Usage: "package version"},
+	&cli.StringFlag{Name: pkgMaintainer, Usage: "package maintainer"},
+	&cli.StringFlag{Name: pkgDescription, Usage: "package description", Value: "hansel virtual package"},
 
-	&cli.StringFlag{Name: outDirectory, Value: "."},
-	&cli.StringFlag{Name: outFilename},
-	&cli.BoolFlag{Name: outApk, Aliases: []string{"alpine"}},
-	&cli.BoolFlag{Name: outDeb, Aliases: []string{"debian", "ubuntu"}},
+	&cli.StringFlag{Name: outDirectory, Usage: "output directory", Value: "."},
+	&cli.StringFlag{Name: outFilename, Usage: "output filename, generated if not provided"},
+	&cli.BoolFlag{Name: outApk, Usage: "generate apk package", Aliases: []string{"alpine"}},
+	&cli.BoolFlag{Name: outDeb, Usage: "generate deb package", Aliases: []string{"debian", "ubuntu"}},
 	&cli.BoolFlag{
 		Name:  install,
-		Usage: "install the package after generation, then delete the file",
+		Usage: "install the package automatically and delete the file",
 	},
 }
 
