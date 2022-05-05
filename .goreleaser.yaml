@@ -1,2 +1,8 @@
 builds:
   - main: ./cmd/hansel/
+    goos:
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - arm64
