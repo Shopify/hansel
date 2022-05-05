@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 
@@ -25,6 +26,7 @@ const (
 	outFilename  = "file"
 	outApk       = "apk"
 	outDeb       = "deb"
+	install      = "install"
 )
 
 var GenerateFlags = []cli.Flag{
@@ -38,6 +40,10 @@ var GenerateFlags = []cli.Flag{
 	&cli.StringFlag{Name: outFilename},
 	&cli.BoolFlag{Name: outApk, Aliases: []string{"alpine"}},
 	&cli.BoolFlag{Name: outDeb, Aliases: []string{"debian", "ubuntu"}},
+	&cli.BoolFlag{
+		Name:  install,
+		Usage: "install the package after generation, then delete the file",
+	},
 }
 
 func Generate(log logr.Logger) func(ctx *cli.Context) error {
@@ -101,6 +107,16 @@ func packagers(ctx *cli.Context) (packagers []string) {
 	if ctx.Bool(outDeb) {
 		packagers = append(packagers, "deb")
 	}
+
+	// respect or detect
+	if len(packagers) > 0 {
+		return
+	}
+	if _, err := os.Stat("/etc/alpine-release"); err == nil {
+		packagers = append(packagers, "apk")
+	} else if _, err := os.Stat("/etc/debian_version"); err == nil {
+		packagers = append(packagers, "deb")
+	}
 	return
 }
 
@@ -120,6 +136,28 @@ func makePackage(ctx *cli.Context, log logr.Logger, info *nfpm.Info, packager st
 
 	if err := pkger.Package(info, f); err != nil {
 		return fmt.Errorf("packaging: %w", err)
+	}
+
+	if !ctx.Bool(install) {
+		return nil
+	}
+
+	defer os.Remove(fn)
+	var installCmd []string
+	switch packager {
+	case "apk":
+		installCmd = []string{"/usr/bin/apk", "add", "--allow-untrusted", "--no-network", fn}
+	case "deb":
+		installCmd = []string{"/usr/bin/dpkg", "-i", fn}
+	default:
+		return fmt.Errorf("unsupported packager: %s", packager)
+	}
+
+	cmd := exec.CommandContext(ctx.Context, installCmd[0], installCmd[1:]...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("installing apk package: %w", err)
 	}
 	return nil
 }
