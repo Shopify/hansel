@@ -20,16 +20,16 @@ jobs:
         id: gover
         run: echo ::set-output name=goversion::$(awk -F':|-' '!/^#/ {print $2}' .github/dockerfile-for-dependabot/Dockerfile)
       - name: Set up Go
-        uses: actions/setup-go@v3.0.0
+        uses: actions/setup-go@f6164bd8c8acb4a71fb2791a8b6c4024ff038dab # tag=v3.0.0
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
-      - uses: docker/login-action@v1.14.1
+      - uses: docker/login-action@dd4fa0671be5250ee6f50aedf4cb05514abda2c7 # tag=v1.14.1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
-        uses: goreleaser/goreleaser-action@v2.9.1
+        uses: goreleaser/goreleaser-action@b953231f81b8dfd023c58e0854a721e35037f28b # tag=v2.9.1
         with:
           distribution: goreleaser
           version: v1.8.3

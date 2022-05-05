@@ -18,7 +18,7 @@ jobs:
         id: gover
         run: echo ::set-output name=goversion::$(awk -F':|-' '!/^#/ {print $2}' .github/dockerfile-for-dependabot/Dockerfile)
       - name: Set up Go
-        uses: actions/setup-go@v3.0.0
+        uses: actions/setup-go@f6164bd8c8acb4a71fb2791a8b6c4024ff038dab # tag=v3.0.0
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
       - run: go test -race ./...
