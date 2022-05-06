@@ -49,13 +49,19 @@ var GenerateFlags = []cli.Flag{
 func Generate(log logr.Logger) func(ctx *cli.Context) error {
 	return func(ctx *cli.Context) error {
 		eg, _ := errgroup.WithContext(ctx.Context)
-		for _, packager := range packagers(ctx) {
+		info := pkgInfo(ctx)
+		if err := nfpm.Validate(info); err != nil {
+			return fmt.Errorf("validating package info: %w", err)
+		}
+
+		packagers := packagers(ctx)
+		if len(packagers) == 0 {
+			return fmt.Errorf("no packager(s) specified")
+		}
+		for _, packager := range packagers {
 			pkger := packager
 			eg.Go(func() error {
-				info, err := pkgInfo(ctx)
-				if err != nil {
-					return nil
-				}
+				info := pkgInfo(ctx)
 				return makePackage(ctx, log, info, pkger)
 			})
 		}
@@ -63,18 +69,14 @@ func Generate(log logr.Logger) func(ctx *cli.Context) error {
 	}
 }
 
-func pkgInfo(ctx *cli.Context) (*nfpm.Info, error) {
-	info := &nfpm.Info{
+func pkgInfo(ctx *cli.Context) *nfpm.Info {
+	return &nfpm.Info{
 		Name:        ctx.String(pkgName),
 		Arch:        arch(ctx),
 		Version:     ctx.String(pkgVersion),
 		Maintainer:  maintainer(ctx),
 		Description: ctx.String(pkgDescription),
 	}
-	if err := nfpm.Validate(info); err != nil {
-		return nil, fmt.Errorf("validating package info: %w", err)
-	}
-	return info, nil
 }
 
 func arch(ctx *cli.Context) string {
