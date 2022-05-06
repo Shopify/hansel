@@ -3,9 +3,9 @@ package main
 import (
 	"os"
 
+	"github.com/Shopify/hansel/internal/cli"
 	"github.com/go-logr/zerologr"
 	"github.com/rs/zerolog"
-	"github.com/thepwagner/hansel/internal/cli"
 )
 
 func main() {

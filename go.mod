@@ -1,4 +1,4 @@
-module github.com/thepwagner/hansel
+module github.com/Shopify/hansel
 
 go 1.18
 

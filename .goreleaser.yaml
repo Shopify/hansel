@@ -16,14 +16,14 @@ dockers:
     goos: linux
     goarch: amd64
     image_templates:
-      - ghcr.io/thepwagner/hansel:{{ .Version }}-amd64
+      - ghcr.io/Shopify/hansel:{{ .Version }}-amd64
     build_flag_templates:
       - --platform=linux/amd64
       - --no-cache
       - --label=org.opencontainers.image.title={{ .ProjectName }}
       - --label=org.opencontainers.image.description={{ .ProjectName }}
-      - --label=org.opencontainers.image.url=https://github.com/thepwagner/{{ .ProjectName }}
-      - --label=org.opencontainers.image.source=https://github.com/thepwagner/{{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/Shopify/{{ .ProjectName }}
+      - --label=org.opencontainers.image.source=https://github.com/Shopify/{{ .ProjectName }}
       - --label=org.opencontainers.image.version={{ .Version }}
       - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
       - --label=org.opencontainers.image.revision={{ .FullCommit }}
@@ -31,25 +31,25 @@ dockers:
   - <<: *docker
     goarch: arm64
     image_templates:
-      - ghcr.io/thepwagner/hansel:{{ .Version }}-arm64
+      - ghcr.io/Shopify/hansel:{{ .Version }}-arm64
     build_flag_templates:
       - --platform=linux/arm64/v8
       - --no-cache
       - --label=org.opencontainers.image.title={{ .ProjectName }}
       - --label=org.opencontainers.image.description={{ .ProjectName }}
-      - --label=org.opencontainers.image.url=https://github.com/thepwagner/{{ .ProjectName }}
-      - --label=org.opencontainers.image.source=https://github.com/thepwagner/{{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/Shopify/{{ .ProjectName }}
+      - --label=org.opencontainers.image.source=https://github.com/Shopify/{{ .ProjectName }}
       - --label=org.opencontainers.image.version={{ .Version }}
       - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
       - --label=org.opencontainers.image.revision={{ .FullCommit }}
       - --label=org.opencontainers.image.licenses=MIT
 
 docker_manifests:
-  - name_template: ghcr.io/thepwagner/{{ .ProjectName }}:{{ .Version }}
+  - name_template: ghcr.io/Shopify/{{ .ProjectName }}:{{ .Version }}
     image_templates:
-      - ghcr.io/thepwagner/{{ .ProjectName }}:{{ .Version }}-amd64
-      - ghcr.io/thepwagner/{{ .ProjectName }}:{{ .Version }}-arm64
-  - name_template: ghcr.io/thepwagner/{{ .ProjectName }}:latest
+      - ghcr.io/Shopify/{{ .ProjectName }}:{{ .Version }}-amd64
+      - ghcr.io/Shopify/{{ .ProjectName }}:{{ .Version }}-arm64
+  - name_template: ghcr.io/Shopify/{{ .ProjectName }}:latest
     image_templates:
-      - ghcr.io/thepwagner/{{ .ProjectName }}:{{ .Version }}-amd64
-      - ghcr.io/thepwagner/{{ .ProjectName }}:{{ .Version }}-arm64
+      - ghcr.io/Shopify/{{ .ProjectName }}:{{ .Version }}-amd64
+      - ghcr.io/Shopify/{{ .ProjectName }}:{{ .Version }}-arm64

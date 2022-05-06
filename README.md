@@ -4,7 +4,7 @@ Hansel generates empty linux packages. These packages can be installed to track 
 
 You can use hansel in a multistep build:
 ```dockerfile
-FROM ghcr.io/thepwagner/hansel:latest AS crumbs
+FROM ghcr.io/Shopify/hansel:latest AS crumbs
 RUN hansel --name rando-thing --version v1.2.3 --debian
 
 FROM debian:bullseye
