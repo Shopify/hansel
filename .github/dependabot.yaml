@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    reviewers:
+      - "Shopify/infrasec"
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    reviewers:
+      - "Shopify/infrasec"
+  - package-ecosystem: "docker"
+    directory: "/.github/dockerfile-for-dependabot/"
+    schedule:
+      interval: "daily"
+    reviewers:
+      - "Shopify/infrasec"
