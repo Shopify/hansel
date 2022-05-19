@@ -7,7 +7,7 @@ require (
 	github.com/go-logr/zerologr v1.2.1
 	github.com/goreleaser/nfpm/v2 v2.15.1
 	github.com/rs/zerolog v1.26.1
-	github.com/urfave/cli/v2 v2.6.0
+	github.com/urfave/cli/v2 v2.7.1
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
 
@@ -20,6 +20,7 @@ require (
 	github.com/Microsoft/go-winio v0.5.0 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20210512092938-c05353c2d58c // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
+	github.com/antzucaro/matchr v0.0.0-20210222213004-b04723ef80f0 // indirect
 	github.com/blakesmith/ar v0.0.0-20190502131153-809d4375e1fb // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
 	github.com/emirpasic/gods v1.12.0 // indirect
