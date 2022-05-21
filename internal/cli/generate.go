@@ -180,6 +180,7 @@ func makePackage(ctx *cli.Context, log logr.Logger, info *nfpm.Info, packager st
 	}
 
 	log.Info("installing package", "command", installCmd)
+	//nolint:gosec
 	cmd := exec.CommandContext(ctx.Context, installCmd[0], installCmd[1:]...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

@@ -1,0 +1,31 @@
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - deadcode
+    - depguard
+    - dogsled
+    - exhaustive
+    - funlen
+    - gocritic
+    - gocyclo
+    - godot
+    - gofmt
+    - goimports
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - lll
+    - misspell
+    - staticcheck
+    - structcheck
+    - typecheck
+    - unused
+    - varcheck
+    - whitespace
+  fast: false
+
+linters-settings:
+  misspell:
+    locale: UK
