@@ -18,6 +18,6 @@ func main() {
 	app := cli.NewApp(log)
 	if err := app.Run(os.Args); err != nil {
 		log.Error(err, "encountered error")
-		panic(err)
+		os.Exit(1)
 	}
 }

@@ -16,30 +16,30 @@ import (
 )
 
 const (
-	pkgName        = "name"
-	pkgArch        = "arch"
-	pkgVersion     = "version"
+	FlagPkgName    = "name"
+	FlagPkgArch    = "arch"
+	FlagPkgVersion = "version"
 	pkgMaintainer  = "maintainer"
 	pkgDescription = "description"
 
-	outDirectory = "directory"
-	outFilename  = "file"
-	outApk       = "apk"
-	outDeb       = "deb"
-	install      = "install"
+	FlagOutDirectory = "directory"
+	outFilename      = "file"
+	FlagOutApk       = "apk"
+	FlagOutDeb       = "deb"
+	install          = "install"
 )
 
 var GenerateFlags = []cli.Flag{
-	&cli.StringFlag{Name: pkgName, Usage: "package name"},
-	&cli.StringFlag{Name: pkgArch, Usage: "package architecture"},
-	&cli.StringFlag{Name: pkgVersion, Usage: "package version"},
+	&cli.StringFlag{Name: FlagPkgName, Usage: "package name"},
+	&cli.StringFlag{Name: FlagPkgArch, Usage: "package architecture"},
+	&cli.StringFlag{Name: FlagPkgVersion, Usage: "package version"},
 	&cli.StringFlag{Name: pkgMaintainer, Usage: "package maintainer"},
 	&cli.StringFlag{Name: pkgDescription, Usage: "package description", Value: "hansel virtual package"},
 
-	&cli.StringFlag{Name: outDirectory, Usage: "output directory", Value: "."},
+	&cli.StringFlag{Name: FlagOutDirectory, Usage: "output directory", Value: "."},
 	&cli.StringFlag{Name: outFilename, Usage: "output filename, generated if not provided"},
-	&cli.BoolFlag{Name: outApk, Usage: "generate apk package", Aliases: []string{"alpine"}},
-	&cli.BoolFlag{Name: outDeb, Usage: "generate deb package", Aliases: []string{"debian", "ubuntu"}},
+	&cli.BoolFlag{Name: FlagOutApk, Usage: "generate apk package", Aliases: []string{"alpine"}},
+	&cli.BoolFlag{Name: FlagOutDeb, Usage: "generate deb package", Aliases: []string{"debian", "ubuntu"}},
 	&cli.BoolFlag{
 		Name:  install,
 		Usage: "install the package automatically and delete the file",
@@ -71,21 +71,22 @@ func Generate(log logr.Logger) func(ctx *cli.Context) error {
 
 func pkgInfo(ctx *cli.Context) *nfpm.Info {
 	return &nfpm.Info{
-		Name:        ctx.String(pkgName),
+		Name:        ctx.String(FlagPkgName),
 		Arch:        arch(ctx),
-		Version:     ctx.String(pkgVersion),
+		Version:     ctx.String(FlagPkgVersion),
 		Maintainer:  maintainer(ctx),
 		Description: ctx.String(pkgDescription),
 	}
 }
 
 func arch(ctx *cli.Context) string {
-	if a := ctx.String(pkgArch); a != "" {
+	if a := ctx.String(FlagPkgArch); a != "" {
 		return a
 	}
-	// assumption: there will be mapping
 	switch runtime.GOARCH {
 	case "amd64":
+		return runtime.GOARCH
+	case "arm64":
 		return runtime.GOARCH
 	default:
 		return "amd64"
@@ -103,10 +104,10 @@ func maintainer(ctx *cli.Context) string {
 }
 
 func packagers(ctx *cli.Context) (packagers []string) {
-	if ctx.Bool(outApk) {
+	if ctx.Bool(FlagOutApk) {
 		packagers = append(packagers, "apk")
 	}
-	if ctx.Bool(outDeb) {
+	if ctx.Bool(FlagOutDeb) {
 		packagers = append(packagers, "deb")
 	}
 
@@ -166,7 +167,7 @@ func makePackage(ctx *cli.Context, log logr.Logger, info *nfpm.Info, packager st
 }
 
 func packageFn(ctx *cli.Context, pkgerFn string) string {
-	dir := ctx.String(outDirectory)
+	dir := ctx.String(FlagOutDirectory)
 	fn := ctx.String(outFilename)
 	if fn == "" {
 		return filepath.Join(dir, pkgerFn)

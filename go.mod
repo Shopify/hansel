@@ -7,6 +7,7 @@ require (
 	github.com/go-logr/zerologr v1.2.1
 	github.com/goreleaser/nfpm/v2 v2.15.1
 	github.com/rs/zerolog v1.26.1
+	github.com/stretchr/testify v1.7.1
 	github.com/urfave/cli/v2 v2.6.0
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
@@ -22,6 +23,7 @@ require (
 	github.com/acomagu/bufpipe v1.0.3 // indirect
 	github.com/blakesmith/ar v0.0.0-20190502131153-809d4375e1fb // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emirpasic/gods v1.12.0 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect
 	github.com/go-git/go-billy/v5 v5.3.1 // indirect
@@ -39,6 +41,7 @@ require (
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/ulikunitz/xz v0.5.10 // indirect
