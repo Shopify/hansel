@@ -24,7 +24,7 @@ const (
 	pkgDescription = "description"
 
 	FlagOutDirectory = "directory"
-	outFilename      = "file"
+	FlagOutFilename  = "file"
 	FlagOutApk       = "apk"
 	FlagOutDeb       = "deb"
 	FlagOutRpm       = "rpm"
@@ -39,7 +39,7 @@ var GenerateFlags = []cli.Flag{
 	&cli.StringFlag{Name: pkgDescription, Usage: "package description", Value: "hansel virtual package"},
 
 	&cli.StringFlag{Name: FlagOutDirectory, Usage: "output directory", Value: "."},
-	&cli.StringFlag{Name: outFilename, Usage: "output filename, generated if not provided"},
+	&cli.StringFlag{Name: FlagOutFilename, Usage: "output filename, generated if not provided"},
 	&cli.BoolFlag{Name: FlagOutApk, Usage: "generate apk package", Aliases: []string{"alpine"}},
 	&cli.BoolFlag{Name: FlagOutDeb, Usage: "generate deb package", Aliases: []string{"debian", "ubuntu"}},
 	&cli.BoolFlag{Name: FlagOutRpm, Usage: "generate rpm package", Aliases: []string{"fedora", "rhel"}},
@@ -87,9 +87,7 @@ func arch(ctx *cli.Context) string {
 		return a
 	}
 	switch runtime.GOARCH {
-	case "amd64":
-		return runtime.GOARCH
-	case "arm64":
+	case "amd64", "arm64":
 		return runtime.GOARCH
 	default:
 		return "amd64"
@@ -106,7 +104,9 @@ func maintainer(ctx *cli.Context) string {
 	return ""
 }
 
-func packagers(ctx *cli.Context) (packagers []string) {
+func packagers(ctx *cli.Context) []string {
+	var packagers []string
+	// If packager(s) are specified, use them
 	if ctx.Bool(FlagOutApk) {
 		packagers = append(packagers, "apk")
 	}
@@ -116,11 +116,24 @@ func packagers(ctx *cli.Context) (packagers []string) {
 	if ctx.Bool(FlagOutRpm) {
 		packagers = append(packagers, "rpm")
 	}
-
-	// respect or detect
 	if len(packagers) > 0 {
-		return
+		return packagers
 	}
+
+	// If a filename is specified, guess packager from that:
+	if fn := ctx.String(FlagOutFilename); fn != "" {
+		switch filepath.Ext(fn) {
+		case ".apk":
+			packagers = append(packagers, "apk")
+		case ".deb":
+			packagers = append(packagers, "deb")
+		case ".rpm":
+			packagers = append(packagers, "rpm")
+		}
+		return packagers
+	}
+
+	// Failing that, fingerprint the current OS and use that:
 	if _, err := os.Stat("/etc/alpine-release"); err == nil {
 		packagers = append(packagers, "apk")
 	} else if _, err := os.Stat("/etc/debian_version"); err == nil {
@@ -128,7 +141,7 @@ func packagers(ctx *cli.Context) (packagers []string) {
 	} else if _, err := os.Stat("/etc/redhat-release"); err == nil {
 		packagers = append(packagers, "rpm")
 	}
-	return
+	return packagers
 }
 
 func makePackage(ctx *cli.Context, log logr.Logger, info *nfpm.Info, packager string) error {
@@ -178,7 +191,7 @@ func makePackage(ctx *cli.Context, log logr.Logger, info *nfpm.Info, packager st
 
 func packageFn(ctx *cli.Context, pkgerFn string) string {
 	dir := ctx.String(FlagOutDirectory)
-	fn := ctx.String(outFilename)
+	fn := ctx.String(FlagOutFilename)
 	if fn == "" {
 		return filepath.Join(dir, pkgerFn)
 	}

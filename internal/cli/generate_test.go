@@ -59,6 +59,28 @@ func TestGenerate_Directory(t *testing.T) {
 	assert.Greater(t, rpm.Size(), int64(0))
 }
 
+func TestGenerate_Filename(t *testing.T) {
+	cliCtx := newCliContext(t)
+	tmpDir := t.TempDir()
+	cliCtx.Set(cli.FlagOutDirectory, tmpDir)
+	cliCtx.Set(cli.FlagOutFilename, "hansel-breadcrumb.apk")
+	cliCtx.Set(cli.FlagPkgArch, "amd64")
+
+	err := cli.Generate(logr.Discard())(cliCtx)
+	require.NoError(t, err)
+
+	dir, err := os.ReadDir(tmpDir)
+	require.NoError(t, err)
+	assert.Len(t, dir, 1)
+	for _, e := range dir {
+		t.Log(e.Name())
+	}
+	assert.Equal(t, "hansel-breadcrumb.apk", dir[0].Name())
+	info, err := dir[0].Info()
+	require.NoError(t, err)
+	assert.Greater(t, info.Size(), int64(0))
+}
+
 func TestGenerate_InstallDebian(t *testing.T) {
 	// This test detects that the current system is debian, and auto-installs the generated .deb package
 	// It should only be run in the container providedby Dockerfile.test
