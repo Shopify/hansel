@@ -12,9 +12,3 @@ updates:
       interval: "daily"
     reviewers:
       - "Shopify/infrasec"
-  - package-ecosystem: "docker"
-    directory: "/.github/dockerfile-for-dependabot/"
-    schedule:
-      interval: "daily"
-    reviewers:
-      - "Shopify/infrasec"

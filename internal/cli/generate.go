@@ -26,7 +26,7 @@ const (
 	outFilename      = "file"
 	FlagOutApk       = "apk"
 	FlagOutDeb       = "deb"
-	install          = "install"
+	FlagInstall      = "install"
 )
 
 var GenerateFlags = []cli.Flag{
@@ -41,7 +41,7 @@ var GenerateFlags = []cli.Flag{
 	&cli.BoolFlag{Name: FlagOutApk, Usage: "generate apk package", Aliases: []string{"alpine"}},
 	&cli.BoolFlag{Name: FlagOutDeb, Usage: "generate deb package", Aliases: []string{"debian", "ubuntu"}},
 	&cli.BoolFlag{
-		Name:  install,
+		Name:  FlagInstall,
 		Usage: "install the package automatically and delete the file",
 	},
 }
@@ -141,7 +141,7 @@ func makePackage(ctx *cli.Context, log logr.Logger, info *nfpm.Info, packager st
 		return fmt.Errorf("packaging: %w", err)
 	}
 
-	if !ctx.Bool(install) {
+	if !ctx.Bool(FlagInstall) {
 		return nil
 	}
 
@@ -149,7 +149,7 @@ func makePackage(ctx *cli.Context, log logr.Logger, info *nfpm.Info, packager st
 	var installCmd []string
 	switch packager {
 	case "apk":
-		installCmd = []string{"/sbin/apk", "add", "--allow-untrusted", "-repositories-file=/dev/null", "--no-network", fn}
+		installCmd = []string{"/sbin/apk", "add", "--allow-untrusted", "--repositories-file=/dev/null", "--no-network", fn}
 	case "deb":
 		installCmd = []string{"/usr/bin/dpkg", "-i", fn}
 	default:

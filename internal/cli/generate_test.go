@@ -3,6 +3,7 @@ package cli_test
 import (
 	"flag"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"testing"
 
@@ -46,12 +47,50 @@ func TestGenerate_Directory(t *testing.T) {
 	for _, e := range dir {
 		t.Log(e.Name())
 	}
-	deb, err := os.Stat(filepath.Join(tmpDir, "test_1.0.0_amd64.deb"))
+	deb, err := os.Stat(filepath.Join(tmpDir, "hansel-breadcrumb_1.0.0_amd64.deb"))
 	require.NoError(t, err)
 	assert.Greater(t, deb.Size(), int64(0))
-	apk, err := os.Stat(filepath.Join(tmpDir, "test_1.0.0_x86_64.apk"))
+	apk, err := os.Stat(filepath.Join(tmpDir, "hansel-breadcrumb_1.0.0_x86_64.apk"))
 	require.NoError(t, err)
 	assert.Greater(t, apk.Size(), int64(0))
+}
+
+func TestGenerate_InstallDebian(t *testing.T) {
+	// This test detects that the current system is debian, and auto-installs the generated .deb package
+	// It should only be run in the container providedby Dockerfile.test
+	if _, ok := os.LookupEnv("HANSEL_TEST_DEBIAN"); !ok {
+		t.Skip("use Dockerfile.test")
+	}
+
+	cliCtx := newCliContext(t)
+	cliCtx.Set(cli.FlagInstall, "true")
+
+	err := cli.Generate(logr.Discard())(cliCtx)
+	require.NoError(t, err)
+
+	out, err := exec.Command("dpkg", "-s", "hansel-breadcrumb").CombinedOutput()
+	require.NoError(t, err)
+	t.Log(string(out))
+	assert.Contains(t, string(out), "Version: 1.0.0")
+}
+
+func TestGenerate_InstallAlpine(t *testing.T) {
+	// This test detects that the current system is alpine, and auto-installs the generated .apk package
+	// It should only be run in the container providedby Dockerfile.test
+	if _, ok := os.LookupEnv("HANSEL_TEST_ALPINE"); !ok {
+		t.Skip("use Dockerfile.test")
+	}
+
+	cliCtx := newCliContext(t)
+	cliCtx.Set(cli.FlagInstall, "true")
+
+	err := cli.Generate(logr.Discard())(cliCtx)
+	require.NoError(t, err)
+
+	out, err := exec.Command("apk", "info", "hansel-breadcrumb").CombinedOutput()
+	require.NoError(t, err)
+	t.Log(string(out))
+	assert.Contains(t, string(out), "hansel-breadcrumb-1.0.0")
 }
 
 func newCliContext(tb testing.TB) *urfave.Context {
@@ -62,7 +101,7 @@ func newCliContext(tb testing.TB) *urfave.Context {
 		f.Apply(flags)
 	}
 	cliCtx := urfave.NewContext(nil, flags, nil)
-	cliCtx.Set(cli.FlagPkgName, "test")
+	cliCtx.Set(cli.FlagPkgName, "hansel-breadcrumb")
 	cliCtx.Set(cli.FlagPkgVersion, "1.0.0")
 
 	return cliCtx
