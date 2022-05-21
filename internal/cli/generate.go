@@ -11,6 +11,7 @@ import (
 	"github.com/goreleaser/nfpm/v2"
 	_ "github.com/goreleaser/nfpm/v2/apk"
 	_ "github.com/goreleaser/nfpm/v2/deb"
+	_ "github.com/goreleaser/nfpm/v2/rpm"
 	"github.com/urfave/cli/v2"
 	"golang.org/x/sync/errgroup"
 )
@@ -26,6 +27,7 @@ const (
 	outFilename      = "file"
 	FlagOutApk       = "apk"
 	FlagOutDeb       = "deb"
+	FlagOutRpm       = "rpm"
 	FlagInstall      = "install"
 )
 
@@ -40,6 +42,7 @@ var GenerateFlags = []cli.Flag{
 	&cli.StringFlag{Name: outFilename, Usage: "output filename, generated if not provided"},
 	&cli.BoolFlag{Name: FlagOutApk, Usage: "generate apk package", Aliases: []string{"alpine"}},
 	&cli.BoolFlag{Name: FlagOutDeb, Usage: "generate deb package", Aliases: []string{"debian", "ubuntu"}},
+	&cli.BoolFlag{Name: FlagOutRpm, Usage: "generate rpm package", Aliases: []string{"fedora", "rhel"}},
 	&cli.BoolFlag{
 		Name:  FlagInstall,
 		Usage: "install the package automatically and delete the file",
@@ -110,6 +113,9 @@ func packagers(ctx *cli.Context) (packagers []string) {
 	if ctx.Bool(FlagOutDeb) {
 		packagers = append(packagers, "deb")
 	}
+	if ctx.Bool(FlagOutRpm) {
+		packagers = append(packagers, "rpm")
+	}
 
 	// respect or detect
 	if len(packagers) > 0 {
@@ -119,6 +125,8 @@ func packagers(ctx *cli.Context) (packagers []string) {
 		packagers = append(packagers, "apk")
 	} else if _, err := os.Stat("/etc/debian_version"); err == nil {
 		packagers = append(packagers, "deb")
+	} else if _, err := os.Stat("/etc/redhat-release"); err == nil {
+		packagers = append(packagers, "rpm")
 	}
 	return
 }
@@ -152,6 +160,8 @@ func makePackage(ctx *cli.Context, log logr.Logger, info *nfpm.Info, packager st
 		installCmd = []string{"/sbin/apk", "add", "--allow-untrusted", "--repositories-file=/dev/null", "--no-network", fn}
 	case "deb":
 		installCmd = []string{"/usr/bin/dpkg", "-i", fn}
+	case "rpm":
+		installCmd = []string{"/usr/bin/rpm", "-i", fn}
 	default:
 		return fmt.Errorf("unsupported packager: %s", packager)
 	}

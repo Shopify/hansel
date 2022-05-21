@@ -36,6 +36,7 @@ func TestGenerate_Directory(t *testing.T) {
 	cliCtx.Set(cli.FlagOutDirectory, tmpDir)
 	cliCtx.Set(cli.FlagOutApk, "true")
 	cliCtx.Set(cli.FlagOutDeb, "true")
+	cliCtx.Set(cli.FlagOutRpm, "true")
 	cliCtx.Set(cli.FlagPkgArch, "amd64")
 
 	err := cli.Generate(logr.Discard())(cliCtx)
@@ -43,16 +44,19 @@ func TestGenerate_Directory(t *testing.T) {
 
 	dir, err := os.ReadDir(tmpDir)
 	require.NoError(t, err)
-	assert.Len(t, dir, 2)
+	assert.Len(t, dir, 3)
 	for _, e := range dir {
 		t.Log(e.Name())
 	}
-	deb, err := os.Stat(filepath.Join(tmpDir, "hansel-breadcrumb_1.0.0_amd64.deb"))
-	require.NoError(t, err)
-	assert.Greater(t, deb.Size(), int64(0))
 	apk, err := os.Stat(filepath.Join(tmpDir, "hansel-breadcrumb_1.0.0_x86_64.apk"))
 	require.NoError(t, err)
 	assert.Greater(t, apk.Size(), int64(0))
+	deb, err := os.Stat(filepath.Join(tmpDir, "hansel-breadcrumb_1.0.0_amd64.deb"))
+	require.NoError(t, err)
+	assert.Greater(t, deb.Size(), int64(0))
+	rpm, err := os.Stat(filepath.Join(tmpDir, "hansel-breadcrumb-1.0.0.x86_64.rpm"))
+	require.NoError(t, err)
+	assert.Greater(t, rpm.Size(), int64(0))
 }
 
 func TestGenerate_InstallDebian(t *testing.T) {
