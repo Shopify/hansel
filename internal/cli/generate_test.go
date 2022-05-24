@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"testing"
 
 	"github.com/Shopify/hansel/internal/cli"
@@ -15,6 +16,9 @@ import (
 )
 
 func TestGenerate_NoPackagers(t *testing.T) {
+	if runtime.GOOS == "linux" {
+		t.Skip("linux will detect a packager automatically")
+	}
 	cliCtx := newCliContext(t)
 
 	err := cli.Generate(logr.Discard())(cliCtx)
