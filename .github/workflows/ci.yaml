@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
-        with:
-          fetch-depth: 0
       - name: Get latest Go version
         id: gover
         run: echo ::set-output name=goversion::$(grep "AS apk" Dockerfile.test | awk -F':|-' '!/^#/ {print $2}')
@@ -22,11 +20,28 @@ jobs:
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
       - run: go test -race ./...
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
+      - name: Get latest Go version
+        id: gover
+        run: echo ::set-output name=goversion::$(grep "AS apk" Dockerfile.test | awk -F':|-' '!/^#/ {print $2}')
+      - name: Set up Go
+        uses: actions/setup-go@f6164bd8c8acb4a71fb2791a8b6c4024ff038dab # tag=v3.0.0
+        with:
+          go-version: "${{ steps.gover.outputs.goversion }}"
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@537aa1903e5d359d0b27dbc19ddd22c5087f3fbc # tag=v3.2.0
+        with:
+          version: v1.46.2
+          args: --timeout=5m
+
   integration:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
-        with:
-          fetch-depth: 0
       - run: docker build -f Dockerfile.test .

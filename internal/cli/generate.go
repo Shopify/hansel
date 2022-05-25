@@ -32,20 +32,37 @@ const (
 )
 
 var GenerateFlags = []cli.Flag{
-	&cli.StringFlag{Name: FlagPkgName, Usage: "package name"},
-	&cli.StringFlag{Name: FlagPkgArch, Usage: "package architecture"},
-	&cli.StringFlag{Name: FlagPkgVersion, Usage: "package version"},
-	&cli.StringFlag{Name: pkgMaintainer, Usage: "package maintainer"},
-	&cli.StringFlag{Name: pkgDescription, Usage: "package description", Value: "hansel virtual package"},
+	&cli.StringFlag{Name: FlagPkgName, Usage: "package name", Category: "Parameters"},
+	&cli.StringFlag{Name: FlagPkgArch, Usage: "package architecture", Category: "Parameters"},
+	&cli.StringFlag{Name: FlagPkgVersion, Usage: "package version", Category: "Parameters"},
+	&cli.StringFlag{Name: pkgMaintainer, Usage: "package maintainer", Category: "Parameters"},
+	&cli.StringFlag{
+		Name:     pkgDescription,
+		Usage:    "package description",
+		Value:    "hansel virtual package",
+		Category: "Parameters",
+	},
 
-	&cli.StringFlag{Name: FlagOutDirectory, Usage: "output directory", Value: "."},
-	&cli.StringFlag{Name: FlagOutFilename, Usage: "output filename, generated if not provided"},
-	&cli.BoolFlag{Name: FlagOutApk, Usage: "generate apk package", Aliases: []string{"alpine"}},
-	&cli.BoolFlag{Name: FlagOutDeb, Usage: "generate deb package", Aliases: []string{"debian", "ubuntu"}},
-	&cli.BoolFlag{Name: FlagOutRpm, Usage: "generate rpm package", Aliases: []string{"fedora", "rhel"}},
+	&cli.StringFlag{Name: FlagOutDirectory, Usage: "output directory", Value: ".", Category: "Output"},
+	&cli.StringFlag{Name: FlagOutFilename, Usage: "output filename, generated if not provided", Category: "Output"},
+
+	&cli.BoolFlag{Name: FlagOutApk, Usage: "generate apk package", Aliases: []string{"alpine"}, Category: "Packages"},
 	&cli.BoolFlag{
-		Name:  FlagInstall,
-		Usage: "install the package automatically and delete the file",
+		Name:     FlagOutDeb,
+		Usage:    "generate deb package",
+		Aliases:  []string{"debian", "ubuntu"},
+		Category: "Packages",
+	},
+	&cli.BoolFlag{
+		Name:     FlagOutRpm,
+		Usage:    "generate rpm package",
+		Aliases:  []string{"fedora", "rhel"},
+		Category: "Packages",
+	},
+	&cli.BoolFlag{
+		Name:     FlagInstall,
+		Usage:    "install the package automatically and delete the file",
+		Category: "Packages",
 	},
 }
 
