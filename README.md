@@ -4,6 +4,8 @@ Hansel generates empty linux packages. These packages can be installed to track 
 
 TODO: make a gif?
 
+## Usage
+
 You can add hansel to an image, and generate + install tracking packages for dependencies in a single step:
 ```dockerfile
 FROM node:18-alpine
@@ -25,5 +27,3 @@ RUN dpkg -i /tmp/rando-thing.deb && \
 ```
 
 The name is inspired by [Hansel and Gretel](https://en.wikipedia.org/wiki/Hansel_and_Gretel), as the packages are breadcrumbs left for container scanners to identify.
-
-TODO: in contributing.md, specify how to make a release
