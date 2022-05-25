@@ -1,11 +1,12 @@
 # In this example, we generate the metapackages in a separate build step
+# This avoids having the hansel binary in the final image, but leaves you responsible for installing the generated packages
 # Also "hansel and gradle" made me laugh
 
 ARG JDK_VERSION=18.0.1_10
 ARG GRADLE_VERSION=7.4.2
 ARG GRADLE_DIGEST=47803a7139e779f97eeb87f35f5980eb57040535861f746bf9efeffa7d1dd98ae3b3296d1d180444e21eadcdbeac748dc493ae9a2cff552a5629455bbbaa9074
 
-FROM ghcr.io/Shopify/hansel:latest AS crumbs
+FROM ghcr.io/shopify/hansel:latest AS crumbs
 ARG JDK_VERSION
 ARG GRADLE_VERSION
 RUN hansel --name openjdk --version $(echo $JDK_VERSION | sed -e 's/_/-/g') --debian

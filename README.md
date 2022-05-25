@@ -10,14 +10,14 @@ You can add hansel to an image, and generate + install tracking packages for dep
 ```dockerfile
 FROM node:18-alpine
 
-COPY --from=ghcr.io/Shopify/hansel:latest /usr/bin/hansel /usr/bin/hansel
-RUN hansel --name node --version "$(node -v)" --install
+COPY --from=ghcr.io/shopify/hansel:latest /usr/bin/hansel /usr/bin/hansel
+RUN hansel --name node --version "$(node -v | sed -e's/^v//g')" --install
 ```
 
 You can use hansel in a multistep build to generate and install separately:
 ```dockerfile
-FROM ghcr.io/Shopify/hansel:latest AS crumbs
-RUN hansel --name rando-thing --version v1.2.3 --debian
+FROM ghcr.io/shopify/hansel:latest AS crumbs
+RUN hansel --name rando-thing --version 1.2.3 --debian
 
 FROM debian:bullseye
 RUN curl -o /usr/bin/rando-thing https://rando.thing/v1.2.3/unsigned-blob-yolo
