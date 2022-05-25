@@ -2,7 +2,7 @@
 
 Hansel generates empty linux packages. These packages can be installed to track dependencies manually added to a container image.
 
-<!-- TODO: make a gif? -->
+![Usage example](https://user-images.githubusercontent.com/1559510/170337700-2b3e956a-be02-42a1-bcc4-0a0f2db50620.gif)
 
 ## Usage
 
