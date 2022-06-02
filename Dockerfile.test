@@ -1,4 +1,4 @@
-FROM golang:1.18.2 AS deb
+FROM golang:1.18.3 AS deb
 WORKDIR /app
 COPY go.mod .
 COPY go.sum .
@@ -8,7 +8,7 @@ ENV HANSEL_TEST_DEBIAN=true
 RUN [ "go", "test", "-v", "./internal/cli/...", "-run", "TestGenerate_InstallDebian" ]
 
 # This line also determines the golang version used for GitHub Actions CI
-FROM golang:1.18.2-alpine AS apk
+FROM golang:1.18.3 AS apk
 ENV CGO_ENABLED=0
 WORKDIR /app
 COPY go.mod .
