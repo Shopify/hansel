@@ -7,7 +7,7 @@ require (
 	github.com/go-logr/zerologr v1.2.1
 	github.com/goreleaser/nfpm/v2 v2.15.1
 	github.com/rs/zerolog v1.26.1
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.7.2
 	github.com/urfave/cli/v2 v2.8.1
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
@@ -55,5 +55,5 @@ require (
 	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
