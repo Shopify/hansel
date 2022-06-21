@@ -8,7 +8,7 @@ require (
 	github.com/goreleaser/nfpm/v2 v2.16.0
 	github.com/rs/zerolog v1.27.0
 	github.com/stretchr/testify v1.7.4
-	github.com/urfave/cli/v2 v2.10.1
+	github.com/urfave/cli/v2 v2.10.2
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
 
@@ -23,7 +23,7 @@ require (
 	github.com/acomagu/bufpipe v1.0.3 // indirect
 	github.com/blakesmith/ar v0.0.0-20190502131153-809d4375e1fb // indirect
 	github.com/cavaliergopher/cpio v1.0.1 // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emirpasic/gods v1.12.0 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect
