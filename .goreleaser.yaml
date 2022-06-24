@@ -53,3 +53,13 @@ docker_manifests:
     image_templates:
       - ghcr.io/shopify/{{ .ProjectName }}:{{ .Version }}-amd64
       - ghcr.io/shopify/{{ .ProjectName }}:{{ .Version }}-arm64
+
+docker_signs:
+- cmd: cosign
+  env:
+  - COSIGN_EXPERIMENTAL=1
+  artifacts: manifests
+  output: true
+  args:
+  - 'sign'
+  - '${artifact}'
