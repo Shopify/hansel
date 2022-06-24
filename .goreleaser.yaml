@@ -10,7 +10,7 @@ builds:
       - arm64
     hooks:
       post:
-        - cmd: "cosign sign-blob --output-certificate dist/{{ .ProjectName }}_{{ .Version }}_{{ .Arch }}-keyless.pem --output-signature dist/{{ .ProjectName }}_{{ .Version }}_{{ .Arch }}-keyless.sig {{ .Path }}"
+        - cmd: "cosign sign-blob --output-certificate dist/{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}-keyless.pem --output-signature dist/{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}-keyless.sig {{ .Path }}"
           env:
             - COSIGN_EXPERIMENTAL=1
 
