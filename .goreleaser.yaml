@@ -10,11 +10,14 @@ builds:
       - arm64
     hooks:
       post:
-        - sh -c "COSIGN_EXPERIMENTAL=1 cosign sign-blob --output dist/{{ .ProjectName }}_{{ .Version }}_{{ .Target }}.sig {{ .Path }}"
+        - cmd: "cosign sign-blob --output dist/{{ .ProjectName }}_{{ .Version }}_{{ .Target }}.sig {{ .Path }}"
+          output: true
+          env:
+            - COSIGN_EXPERIMENTAL=1
 
 release:
   extra_files:
-  - glob: dist/*.sig
+    - glob: dist/*.sig
 
 dockers:
   - &docker
@@ -62,11 +65,11 @@ docker_manifests:
       - ghcr.io/thepwagner/{{ .ProjectName }}:{{ .Version }}-arm64
 
 docker_signs:
-- cmd: cosign
-  env:
-  - COSIGN_EXPERIMENTAL=1
-  artifacts: manifests
-  output: true
-  args:
-  - 'sign'
-  - '${artifact}'
+  - cmd: cosign
+    env:
+      - COSIGN_EXPERIMENTAL=1
+    artifacts: manifests
+    output: true
+    args:
+      - "sign"
+      - "${artifact}"
