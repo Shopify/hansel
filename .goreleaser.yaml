@@ -10,8 +10,7 @@ builds:
       - arm64
     hooks:
       post:
-        - cmd: "cosign sign-blob --verbose --output-signature dist/{{ .ProjectName }}_{{ .Version }}_{{ .Target }}.sig {{ .Path }}"
-          output: true
+        - cmd: "cosign sign-blob --output-signature dist/{{ .ProjectName }}_{{ .Version }}_{{ .Target }}.sig {{ .Path }}"
           env:
             - COSIGN_EXPERIMENTAL=1
 
