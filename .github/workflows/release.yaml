@@ -36,6 +36,6 @@ jobs:
         with:
           distribution: goreleaser
           version: v1.8.3
-          args: release --rm-dist
+          args: release --rm-dist --parallelism=1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
