@@ -8,6 +8,13 @@ builds:
     goarch:
       - amd64
       - arm64
+    hooks:
+      post:
+        - sh -c "COSIGN_EXPERIMENTAL=1 cosign sign-blob --output dist/{{ .ProjectName }}_{{ .Version }}_{{ .Target }}.sig {{ .Path }}"
+
+release:
+  extra_files:
+  - glob: dist/*.sig
 
 dockers:
   - &docker
