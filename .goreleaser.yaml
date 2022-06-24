@@ -26,7 +26,7 @@ dockers:
     goos: linux
     goarch: amd64
     image_templates:
-      - ghcr.io/thepwagner/hansel:{{ .Version }}-amd64
+      - ghcr.io/shopify/hansel:{{ .Version }}-amd64
     build_flag_templates:
       - --platform=linux/amd64
       - --no-cache
@@ -41,7 +41,7 @@ dockers:
   - <<: *docker
     goarch: arm64
     image_templates:
-      - ghcr.io/thepwagner/hansel:{{ .Version }}-arm64
+      - ghcr.io/shopify/hansel:{{ .Version }}-arm64
     build_flag_templates:
       - --platform=linux/arm64/v8
       - --no-cache
@@ -55,14 +55,14 @@ dockers:
       - --label=org.opencontainers.image.licenses=MIT
 
 docker_manifests:
-  - name_template: ghcr.io/thepwagner/{{ .ProjectName }}:{{ .Version }}
+  - name_template: ghcr.io/shopify/{{ .ProjectName }}:{{ .Version }}
     image_templates:
-      - ghcr.io/thepwagner/{{ .ProjectName }}:{{ .Version }}-amd64
-      - ghcr.io/thepwagner/{{ .ProjectName }}:{{ .Version }}-arm64
-  - name_template: ghcr.io/thepwagner/{{ .ProjectName }}:latest
+      - ghcr.io/shopify/{{ .ProjectName }}:{{ .Version }}-amd64
+      - ghcr.io/shopify/{{ .ProjectName }}:{{ .Version }}-arm64
+  - name_template: ghcr.io/shopify/{{ .ProjectName }}:latest
     image_templates:
-      - ghcr.io/thepwagner/{{ .ProjectName }}:{{ .Version }}-amd64
-      - ghcr.io/thepwagner/{{ .ProjectName }}:{{ .Version }}-arm64
+      - ghcr.io/shopify/{{ .ProjectName }}:{{ .Version }}-amd64
+      - ghcr.io/shopify/{{ .ProjectName }}:{{ .Version }}-arm64
 
 docker_signs:
   - cmd: cosign
