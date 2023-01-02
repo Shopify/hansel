@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/go-logr/logr v1.2.3
 	github.com/go-logr/zerologr v1.2.2
-	github.com/goreleaser/nfpm/v2 v2.22.2
+	github.com/goreleaser/nfpm/v2 v2.23.0
 	github.com/rs/zerolog v1.28.0
 	github.com/stretchr/testify v1.8.1
 	github.com/urfave/cli/v2 v2.23.7
@@ -37,7 +37,7 @@ require (
 	github.com/imdario/mergo v0.3.13 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/kevinburke/ssh_config v1.1.0 // indirect
-	github.com/klauspost/compress v1.15.12 // indirect
+	github.com/klauspost/compress v1.15.13 // indirect
 	github.com/klauspost/pgzip v1.2.5 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
@@ -48,7 +48,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
-	github.com/ulikunitz/xz v0.5.10 // indirect
+	github.com/ulikunitz/xz v0.5.11 // indirect
 	github.com/xanzy/ssh-agent v0.3.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	gitlab.com/digitalxero/go-conventional-commit v1.0.7 // indirect
