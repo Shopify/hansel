@@ -12,3 +12,9 @@ updates:
       interval: "daily"
     reviewers:
       - "Shopify/infrasec"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    reviewers:
+      - "Shopify/infrasec"
