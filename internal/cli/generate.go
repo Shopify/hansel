@@ -93,6 +93,7 @@ func pkgInfo(ctx *cli.Context) *nfpm.Info {
 	return &nfpm.Info{
 		Name:        ctx.String(FlagPkgName),
 		Arch:        arch(ctx),
+		Platform:    "linux",
 		Version:     ctx.String(FlagPkgVersion),
 		Maintainer:  maintainer(ctx),
 		Description: ctx.String(pkgDescription),
