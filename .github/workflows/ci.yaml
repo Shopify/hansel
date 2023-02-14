@@ -16,7 +16,7 @@ jobs:
         id: gover
         run: echo ::set-output name=goversion::$(grep "AS apk" Dockerfile.test | awk -F':|-' '!/^#/ {print $2}')
       - name: Set up Go
-        uses: actions/setup-go@f6164bd8c8acb4a71fb2791a8b6c4024ff038dab # tag=v3.0.0
+        uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # tag=v3.5.0
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
       - run: go test -race ./...
@@ -30,13 +30,13 @@ jobs:
         id: gover
         run: echo ::set-output name=goversion::$(grep "AS apk" Dockerfile.test | awk -F':|-' '!/^#/ {print $2}')
       - name: Set up Go
-        uses: actions/setup-go@f6164bd8c8acb4a71fb2791a8b6c4024ff038dab # tag=v3.0.0
+        uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # tag=v3.5.0
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
       - name: golangci-lint
         uses: golangci/golangci-lint-action@08e2f20817b15149a52b5b3ebe7de50aff2ba8c5 # tag=v3.4.0
         with:
-          version: v1.46.2
+          version: v1.51.1
           args: --timeout=5m
 
   integration:
