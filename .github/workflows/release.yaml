@@ -21,7 +21,7 @@ jobs:
         id: gover
         run: echo ::set-output name=goversion::$(grep "AS apk" Dockerfile.test | awk -F':|-' '!/^#/ {print $2}')
       - name: Set up Go
-        uses: actions/setup-go@f6164bd8c8acb4a71fb2791a8b6c4024ff038dab # tag=v3.0.0
+        uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # tag=v3.5.0
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
       - name: Set up Cosign
