@@ -68,4 +68,5 @@ docker_signs:
     output: true
     args:
       - "sign"
+      - "--yes"
       - "${artifact}"
