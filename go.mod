@@ -8,7 +8,7 @@ require (
 	github.com/goreleaser/nfpm/v2 v2.27.1
 	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.8.2
-	github.com/urfave/cli/v2 v2.25.0
+	github.com/urfave/cli/v2 v2.25.1
 	golang.org/x/sync v0.1.0
 )
 
