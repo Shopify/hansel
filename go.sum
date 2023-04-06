@@ -69,13 +69,13 @@ github.com/goreleaser/chglog v0.4.2 h1:afmbT1d7lX/q+GF8wv3a1Dofs2j/Y9YkiCpGemWR6
 github.com/goreleaser/chglog v0.4.2/go.mod h1:u/F03un4hMCQrp65qSWCkkC6T+G7YLKZ+AM2mITE47s=
 github.com/goreleaser/fileglob v1.3.0 h1:/X6J7U8lbDpQtBvGcwwPS6OpzkNVlVEsFUVRx9+k+7I=
 github.com/goreleaser/fileglob v1.3.0/go.mod h1:Jx6BoXv3mbYkEzwm9THo7xbr5egkAraxkGorbJb4RxU=
-github.com/goreleaser/nfpm/v2 v2.27.1 h1:+q7/aY+SCQjB5OKiqzdBVoFIhG1XnxRBU2Pxqt8qm3U=
-github.com/goreleaser/nfpm/v2 v2.27.1/go.mod h1:o5coBBYYdw+tifbB6DJLL/rR42bUmI5mWCKGumJmEt8=
+github.com/goreleaser/nfpm/v2 v2.28.0 h1:BLKOrJpyBrO/LQ7XQP/mICDBqq6K3iX1cqZIMYKUbCc=
+github.com/goreleaser/nfpm/v2 v2.28.0/go.mod h1:cMwzgk+6Irs3+ZKD6Lz/ADJ8qsVmJxYPlE3/wOxAfVA=
 github.com/huandu/xstrings v1.3.2 h1:L18LIDzqlW6xN2rEkpdV8+oL/IXWJ1APd+vsdYy4Wdw=
 github.com/huandu/xstrings v1.3.2/go.mod h1:y5/lhBue+AyNmUVz9RLU9xbLR0o4KIIExikq4ovT0aE=
 github.com/imdario/mergo v0.3.12/go.mod h1:jmQim1M+e3UYxmgPu/WyfjB3N3VflVyUjjjwH0dnCYA=
-github.com/imdario/mergo v0.3.14 h1:fOqeC1+nCuuk6PKQdg9YmosXX7Y7mHX6R/0ZldI9iHo=
-github.com/imdario/mergo v0.3.14/go.mod h1:WBLT9ZmE3lPoWsEzCh9LPo3TiwVN+ZKEjmz+hD27ysY=
+github.com/imdario/mergo v0.3.15 h1:M8XP7IuFNsqUx6VPK2P9OSmsYsI/YFaGil0uD21V3dM=
+github.com/imdario/mergo v0.3.15/go.mod h1:WBLT9ZmE3lPoWsEzCh9LPo3TiwVN+ZKEjmz+hD27ysY=
 github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 h1:BQSFePA1RWJOlocH6Fxy8MmwDt+yVQYULKfN0RoTN8A=
 github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99/go.mod h1:1lJo3i6rXxKeerYnT8Nvf0QmHCRC1n8sfWVwXF2Frvo=
 github.com/jessevdk/go-flags v1.5.0/go.mod h1:Fw0T6WPc1dYxT4mKEZRfG5kJhaTDP9pj1c2EWnYs/m4=
