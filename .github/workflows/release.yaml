@@ -25,7 +25,7 @@ jobs:
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
       - name: Set up Cosign
-        uses: sigstore/cosign-installer@204a51a57a74d190b284a0ce69b44bc37201f343 # tag=v3.0.3
+        uses: sigstore/cosign-installer@03d0fecf172873164a163bbc64bed0f3bf114ed7 # tag=v3.0.4
       - uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a # tag=v2.1.0
         with:
           registry: ghcr.io
