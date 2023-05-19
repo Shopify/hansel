@@ -7,7 +7,7 @@ require (
 	github.com/go-logr/zerologr v1.2.3
 	github.com/goreleaser/nfpm/v2 v2.28.0
 	github.com/rs/zerolog v1.29.1
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.3
 	github.com/urfave/cli/v2 v2.25.3
 	golang.org/x/sync v0.2.0
 )
