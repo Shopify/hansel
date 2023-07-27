@@ -6,17 +6,13 @@ on:
   issue_comment:
     types: [created]
 
+permissions: {}
+
 jobs:
   cla:
-    runs-on: ubuntu-latest
-    if: |
-      (github.event.issue.pull_request 
-        && !github.event.issue.pull_request.merged_at
-        && contains(github.event.comment.body, 'signed')
-      ) 
-      || (github.event.pull_request && !github.event.pull_request.merged)
-    steps:
-      - uses: Shopify/shopify-cla-action@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          cla-token: ${{ secrets.CLA_TOKEN }}
+    uses: Shopify/github-workflows/.github/workflows/cla.yaml@c395c2cfd65be9a36f5dcfd21f4a2498a477fed4 # v0.0.6
+    permissions:
+      pull-requests: write
+    secrets:
+      token: ${{secrets.GITHUB_TOKEN}}
+      cla-token: ${{secrets.CLA_TOKEN}}
