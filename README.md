@@ -1,5 +1,7 @@
 # Hansel
 
+![OpenSSF Scorecard Badge](https://api.securityscorecards.dev/projects/github.com/Shopify/hansel/badge)
+
 Hansel generates empty linux packages. These packages can be installed to track dependencies manually added to a container image.
 
 [![Usage example](https://asciinema.org/a/497735.svg)](https://asciinema.org/a/497735)
