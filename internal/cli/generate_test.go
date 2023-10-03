@@ -58,7 +58,7 @@ func TestGenerate_Directory(t *testing.T) {
 	deb, err := os.Stat(filepath.Join(tmpDir, "hansel-breadcrumb_1.0.0_amd64.deb"))
 	require.NoError(t, err)
 	assert.Greater(t, deb.Size(), int64(0))
-	rpm, err := os.Stat(filepath.Join(tmpDir, "hansel-breadcrumb-1.0.0.x86_64.rpm"))
+	rpm, err := os.Stat(filepath.Join(tmpDir, "hansel-breadcrumb-1.0.0-1.x86_64.rpm"))
 	require.NoError(t, err)
 	assert.Greater(t, rpm.Size(), int64(0))
 }
