@@ -1,23 +1,18 @@
 package main
 
 import (
+	"log/slog"
 	"os"
 
 	"github.com/Shopify/hansel/internal/cli"
-	"github.com/go-logr/zerologr"
-	"github.com/rs/zerolog"
 )
 
 func main() {
-	zl := zerolog.New(zerolog.NewConsoleWriter()).
-		With().
-		Timestamp().
-		Logger()
-	log := zerologr.New(&zl)
+	log := slog.New(slog.NewTextHandler(os.Stderr, nil))
 
 	app := cli.NewApp(log)
 	if err := app.Run(os.Args); err != nil {
-		log.Error(err, "encountered error")
+		log.Error("encountered error", "error", err)
 		os.Exit(1)
 	}
 }

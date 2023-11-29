@@ -2,12 +2,12 @@ package cli
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 
-	"github.com/go-logr/logr"
 	"github.com/goreleaser/nfpm/v2"
 	_ "github.com/goreleaser/nfpm/v2/apk"
 	_ "github.com/goreleaser/nfpm/v2/deb"
@@ -66,7 +66,7 @@ var GenerateFlags = []cli.Flag{
 	},
 }
 
-func Generate(log logr.Logger) func(ctx *cli.Context) error {
+func Generate(log *slog.Logger) func(ctx *cli.Context) error {
 	return func(ctx *cli.Context) error {
 		eg, _ := errgroup.WithContext(ctx.Context)
 		info := pkgInfo(ctx)
@@ -162,7 +162,7 @@ func packagers(ctx *cli.Context) []string {
 	return packagers
 }
 
-func makePackage(ctx *cli.Context, log logr.Logger, info *nfpm.Info, packager string) error {
+func makePackage(ctx *cli.Context, log *slog.Logger, info *nfpm.Info, packager string) error {
 	pkger, err := nfpm.Get(packager)
 	if err != nil {
 		return fmt.Errorf("getting packager: %w", err)

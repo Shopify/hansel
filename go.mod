@@ -1,12 +1,9 @@
 module github.com/Shopify/hansel
 
-go 1.18
+go 1.21
 
 require (
-	github.com/go-logr/logr v1.3.0
-	github.com/go-logr/zerologr v1.2.3
 	github.com/goreleaser/nfpm/v2 v2.34.0
-	github.com/rs/zerolog v1.31.0
 	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli/v2 v2.25.7
 	golang.org/x/sync v0.5.0
@@ -42,8 +39,6 @@ require (
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/klauspost/compress v1.17.2 // indirect
 	github.com/klauspost/pgzip v1.2.6 // indirect
-	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/pjbgf/sha1cd v0.3.0 // indirect
