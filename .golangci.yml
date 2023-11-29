@@ -2,8 +2,6 @@ linters:
   disable-all: true
   enable:
     - bodyclose
-    - deadcode
-    - depguard
     - dogsled
     - exhaustive
     - funlen
@@ -19,10 +17,8 @@ linters:
     - lll
     - misspell
     - staticcheck
-    - structcheck
     - typecheck
     - unused
-    - varcheck
     - whitespace
   fast: false
 

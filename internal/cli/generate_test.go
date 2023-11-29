@@ -2,6 +2,7 @@ package cli_test
 
 import (
 	"flag"
+	"log/slog"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -9,7 +10,6 @@ import (
 	"testing"
 
 	"github.com/Shopify/hansel/internal/cli"
-	"github.com/go-logr/logr"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	urfave "github.com/urfave/cli/v2"
@@ -21,7 +21,7 @@ func TestGenerate_NoPackagers(t *testing.T) {
 	}
 	cliCtx := newCliContext(t)
 
-	err := cli.Generate(logr.Discard())(cliCtx)
+	err := cli.Generate(slog.Default())(cliCtx)
 	assert.EqualError(t, err, "no packager(s) specified")
 }
 
@@ -29,7 +29,7 @@ func TestGenerate_InvalidPackage(t *testing.T) {
 	cliCtx := newCliContext(t)
 	cliCtx.Set(cli.FlagPkgName, "")
 
-	err := cli.Generate(logr.Discard())(cliCtx)
+	err := cli.Generate(slog.Default())(cliCtx)
 	assert.EqualError(t, err, "validating package info: package name must be provided")
 }
 
@@ -43,7 +43,7 @@ func TestGenerate_Directory(t *testing.T) {
 	cliCtx.Set(cli.FlagOutRpm, "true")
 	cliCtx.Set(cli.FlagPkgArch, "amd64")
 
-	err := cli.Generate(logr.Discard())(cliCtx)
+	err := cli.Generate(slog.Default())(cliCtx)
 	require.NoError(t, err)
 
 	dir, err := os.ReadDir(tmpDir)
@@ -70,7 +70,7 @@ func TestGenerate_Filename(t *testing.T) {
 	cliCtx.Set(cli.FlagOutFilename, "hansel-breadcrumb.apk")
 	cliCtx.Set(cli.FlagPkgArch, "amd64")
 
-	err := cli.Generate(logr.Discard())(cliCtx)
+	err := cli.Generate(slog.Default())(cliCtx)
 	require.NoError(t, err)
 
 	dir, err := os.ReadDir(tmpDir)
@@ -95,7 +95,7 @@ func TestGenerate_InstallDebian(t *testing.T) {
 	cliCtx := newCliContext(t)
 	cliCtx.Set(cli.FlagInstall, "true")
 
-	err := cli.Generate(logr.Discard())(cliCtx)
+	err := cli.Generate(slog.Default())(cliCtx)
 	require.NoError(t, err)
 
 	out, err := exec.Command("dpkg", "-s", "hansel-breadcrumb").CombinedOutput()
@@ -114,7 +114,7 @@ func TestGenerate_InstallAlpine(t *testing.T) {
 	cliCtx := newCliContext(t)
 	cliCtx.Set(cli.FlagInstall, "true")
 
-	err := cli.Generate(logr.Discard())(cliCtx)
+	err := cli.Generate(slog.Default())(cliCtx)
 	require.NoError(t, err)
 
 	out, err := exec.Command("apk", "info", "hansel-breadcrumb").CombinedOutput()
