@@ -15,7 +15,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # tag=v4.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # tag=v4.1.1
         with:
           fetch-depth: 0
       - name: Get latest Go version
@@ -26,7 +26,7 @@ jobs:
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
       - name: Set up Cosign
-        uses: sigstore/cosign-installer@11086d25041f77fe8fe7b9ea4e48e3b9192b8f19 # tag=v3.1.2
+        uses: sigstore/cosign-installer@1fc5bd396d372bee37d608f955b336615edf79c8 # tag=v3.2.0
       - uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # tag=v3.0.0
         with:
           registry: ghcr.io

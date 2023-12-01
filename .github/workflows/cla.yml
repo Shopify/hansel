@@ -10,7 +10,7 @@ permissions: {}
 
 jobs:
   cla:
-    uses: Shopify/github-workflows/.github/workflows/cla.yaml@c395c2cfd65be9a36f5dcfd21f4a2498a477fed4 # v0.0.6
+    uses: Shopify/github-workflows/.github/workflows/cla.yaml@6bad9c35bd35925bc9deea2de30894a057d758dc # v0.1.0
     permissions:
       pull-requests: write
     secrets:
