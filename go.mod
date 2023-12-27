@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/goreleaser/nfpm/v2 v2.34.0
 	github.com/stretchr/testify v1.8.4
-	github.com/urfave/cli/v2 v2.26.0
+	github.com/urfave/cli/v2 v2.27.0
 	golang.org/x/sync v0.5.0
 )
 
