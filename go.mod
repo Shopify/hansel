@@ -3,7 +3,7 @@ module github.com/Shopify/hansel
 go 1.21
 
 require (
-	github.com/goreleaser/nfpm/v2 v2.35.1
+	github.com/goreleaser/nfpm/v2 v2.35.2
 	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli/v2 v2.27.1
 	golang.org/x/sync v0.6.0
