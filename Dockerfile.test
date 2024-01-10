@@ -1,4 +1,4 @@
-FROM golang:1.21.5 AS deb
+FROM golang:1.21.6 AS deb
 WORKDIR /app
 COPY go.mod .
 COPY go.sum .
