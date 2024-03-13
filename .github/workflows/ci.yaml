@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # tag=v4.1.1
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # tag=v4.1.2
       - name: Get latest Go version
         id: gover
         run: echo goversion=$(grep "AS apk" Dockerfile.test | awk -F':|-' '!/^#/ {print $2}') >> "$GITHUB_OUTPUT"
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # tag=v4.1.1
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # tag=v4.1.2
       - name: Get latest Go version
         id: gover
         run: echo goversion=$(grep "AS apk" Dockerfile.test | awk -F':|-' '!/^#/ {print $2}') >> "$GITHUB_OUTPUT"
@@ -43,5 +43,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # tag=v4.1.1
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # tag=v4.1.2
       - run: docker build -f Dockerfile.test .
