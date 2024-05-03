@@ -16,7 +16,7 @@ jobs:
         id: gover
         run: echo goversion=$(grep "AS apk" Dockerfile.test | awk -F':|-' '!/^#/ {print $2}') >> "$GITHUB_OUTPUT"
       - name: Set up Go
-        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # tag=v5.0.0
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # tag=v5.0.1
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
       - run: go test -race ./...
@@ -30,7 +30,7 @@ jobs:
         id: gover
         run: echo goversion=$(grep "AS apk" Dockerfile.test | awk -F':|-' '!/^#/ {print $2}') >> "$GITHUB_OUTPUT"
       - name: Set up Go
-        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # tag=v5.0.0
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # tag=v5.0.1
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
       - name: golangci-lint
