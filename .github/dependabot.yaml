@@ -4,17 +4,20 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    open-pull-requests-limit: 100  
     reviewers:
       - "Shopify/infrasec"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "daily"
+    open-pull-requests-limit: 100  
     reviewers:
       - "Shopify/infrasec"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
+    open-pull-requests-limit: 100
     reviewers:
       - "Shopify/infrasec"
