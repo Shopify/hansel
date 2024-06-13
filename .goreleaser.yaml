@@ -71,3 +71,13 @@ docker_signs:
       - "sign"
       - "--yes"
       - "${artifact}"
+
+nfpms:
+  - id: goreleaser
+    maintainer: "Shopify <admins@shopify.com>"
+    description: "Generates empty packages, as breadcrumbs to mark supply chain debt."
+    license: "MIT"
+    homepage: "https://github.com/Shopify/hansel"
+    formats:
+      - apk
+      - deb
