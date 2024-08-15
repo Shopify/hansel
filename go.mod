@@ -5,7 +5,7 @@ go 1.22
 toolchain go1.22.3
 
 require (
-	github.com/goreleaser/nfpm/v2 v2.38.0
+	github.com/goreleaser/nfpm/v2 v2.39.0
 	github.com/stretchr/testify v1.9.0
 	github.com/urfave/cli/v2 v2.27.4
 	golang.org/x/sync v0.8.0
