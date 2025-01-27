@@ -1,4 +1,4 @@
-FROM golang:1.23.4 AS deb
+FROM golang:1.23.5 AS deb
 WORKDIR /app
 COPY go.mod .
 COPY go.sum .
@@ -9,7 +9,7 @@ RUN [ "go", "test", "-v", "./internal/cli/...", "-run", "TestGenerate_InstallDeb
 
 # This line also determines the golang version used for GitHub Actions CI
 # Use the qualified image name, so Dependabot treats this separate from "golang" above.
-FROM docker.io/library/golang:1.23.4-alpine AS apk
+FROM docker.io/library/golang:1.23.5-alpine AS apk
 ENV CGO_ENABLED=0
 WORKDIR /app
 COPY go.mod .
