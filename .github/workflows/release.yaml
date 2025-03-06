@@ -25,8 +25,6 @@ jobs:
         uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # tag=v5.3.0
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
-      - name: Set up Cosign
-        uses: sigstore/cosign-installer@d7d6bc7722e3daa8354c50bcb52f4837da5e9b6a # tag=v3.8.1
       - uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # tag=v3.3.0
         with:
           registry: ghcr.io
@@ -40,3 +38,13 @@ jobs:
           args: release --clean --parallelism=1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Set up for signing"
+        run: |
+          mkdir -p to_sign
+          mv dist/*.tar.gz to_sign/
+          mv dist/*.deb to_sign/
+          mv dist/*.apk to_sign/
+      - name: "Sign artifacts"
+        uses: actions/attest-build-provenance@bd77c077858b8d561b7a36cbe48ef4cc642ca39d # v2.2.2
+        with:
+          subject-path: "to_sign/*"

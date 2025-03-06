@@ -9,9 +9,6 @@ builds:
     goarch:
       - amd64
       - arm64
-    hooks:
-      post:
-        - cmd: "cosign sign-blob --yes --output-certificate dist/{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}-keyless.pem --output-signature dist/{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}-keyless.sig {{ .Path }}"
 
 release:
   extra_files:
@@ -62,15 +59,6 @@ docker_manifests:
     image_templates:
       - ghcr.io/shopify/{{ .ProjectName }}:{{ .Version }}-amd64
       - ghcr.io/shopify/{{ .ProjectName }}:{{ .Version }}-arm64
-
-docker_signs:
-  - cmd: cosign
-    artifacts: manifests
-    output: true
-    args:
-      - "sign"
-      - "--yes"
-      - "${artifact}"
 
 nfpms:
   - id: goreleaser
