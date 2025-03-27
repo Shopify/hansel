@@ -34,9 +34,9 @@ jobs:
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@55c2c1448f86e01eaae002a5a3a9624417608d84 # tag=v3.7.1
+        uses: golangci/golangci-lint-action@1481404843c368bc19ca9406f87d6e0fc97bdcfd # tag=v3.7.1
         with:
-          version: v1.64.5
+          version: v2.0.1
           args: --timeout=5m
 
   integration:
