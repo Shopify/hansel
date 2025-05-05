@@ -29,3 +29,4 @@ RUN dpkg -i /tmp/rando-thing.deb && \
 ```
 
 The name is inspired by [Hansel and Gretel](https://en.wikipedia.org/wiki/Hansel_and_Gretel), as the packages are breadcrumbs left for container scanners to identify.
+
