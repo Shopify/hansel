@@ -1,7 +1,7 @@
 package cli_test
 
 import (
-	"flag"
+	"context"
 	"log/slog"
 	"os"
 	"os/exec"
@@ -12,38 +12,38 @@ import (
 	"github.com/Shopify/hansel/internal/cli"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	urfave "github.com/urfave/cli/v2"
+	urfave "github.com/urfave/cli/v3"
 )
 
 func TestGenerate_NoPackagers(t *testing.T) {
 	if runtime.GOOS == "linux" {
 		t.Skip("linux will detect a packager automatically")
 	}
-	cliCtx := newCliContext(t)
+	cmd := newCliCommand(t)
 
-	err := cli.Generate(slog.Default())(cliCtx)
+	err := cli.Generate(slog.Default())(t.Context(), cmd)
 	assert.EqualError(t, err, "no packager(s) specified")
 }
 
 func TestGenerate_InvalidPackage(t *testing.T) {
-	cliCtx := newCliContext(t)
-	cliCtx.Set(cli.FlagPkgName, "")
+	cmd := newCliCommand(t)
+	cmd.Set(cli.FlagPkgName, "")
 
-	err := cli.Generate(slog.Default())(cliCtx)
+	err := cli.Generate(slog.Default())(t.Context(), cmd)
 	assert.EqualError(t, err, "validating package info: package name must be provided")
 }
 
 func TestGenerate_Directory(t *testing.T) {
 	// Output every type of package to a temp dir:
-	cliCtx := newCliContext(t)
+	cmd := newCliCommand(t)
 	tmpDir := t.TempDir()
-	cliCtx.Set(cli.FlagOutDirectory, tmpDir)
-	cliCtx.Set(cli.FlagOutApk, "true")
-	cliCtx.Set(cli.FlagOutDeb, "true")
-	cliCtx.Set(cli.FlagOutRpm, "true")
-	cliCtx.Set(cli.FlagPkgArch, "amd64")
+	cmd.Set(cli.FlagOutDirectory, tmpDir)
+	cmd.Set(cli.FlagOutApk, "true")
+	cmd.Set(cli.FlagOutDeb, "true")
+	cmd.Set(cli.FlagOutRpm, "true")
+	cmd.Set(cli.FlagPkgArch, "amd64")
 
-	err := cli.Generate(slog.Default())(cliCtx)
+	err := cli.Generate(slog.Default())(t.Context(), cmd)
 	require.NoError(t, err)
 
 	dir, err := os.ReadDir(tmpDir)
@@ -64,13 +64,13 @@ func TestGenerate_Directory(t *testing.T) {
 }
 
 func TestGenerate_Filename(t *testing.T) {
-	cliCtx := newCliContext(t)
+	cmd := newCliCommand(t)
 	tmpDir := t.TempDir()
-	cliCtx.Set(cli.FlagOutDirectory, tmpDir)
-	cliCtx.Set(cli.FlagOutFilename, "hansel-breadcrumb.apk")
-	cliCtx.Set(cli.FlagPkgArch, "amd64")
+	cmd.Set(cli.FlagOutDirectory, tmpDir)
+	cmd.Set(cli.FlagOutFilename, "hansel-breadcrumb.apk")
+	cmd.Set(cli.FlagPkgArch, "amd64")
 
-	err := cli.Generate(slog.Default())(cliCtx)
+	err := cli.Generate(slog.Default())(t.Context(), cmd)
 	require.NoError(t, err)
 
 	dir, err := os.ReadDir(tmpDir)
@@ -92,10 +92,10 @@ func TestGenerate_InstallDebian(t *testing.T) {
 		t.Skip("use Dockerfile.test")
 	}
 
-	cliCtx := newCliContext(t)
-	cliCtx.Set(cli.FlagInstall, "true")
+	cmd := newCliCommand(t)
+	cmd.Set(cli.FlagInstall, "true")
 
-	err := cli.Generate(slog.Default())(cliCtx)
+	err := cli.Generate(slog.Default())(t.Context(), cmd)
 	require.NoError(t, err)
 
 	out, err := exec.Command("dpkg", "-s", "hansel-breadcrumb").CombinedOutput()
@@ -111,10 +111,10 @@ func TestGenerate_InstallAlpine(t *testing.T) {
 		t.Skip("use Dockerfile.test")
 	}
 
-	cliCtx := newCliContext(t)
-	cliCtx.Set(cli.FlagInstall, "true")
+	cmd := newCliCommand(t)
+	cmd.Set(cli.FlagInstall, "true")
 
-	err := cli.Generate(slog.Default())(cliCtx)
+	err := cli.Generate(slog.Default())(t.Context(), cmd)
 	require.NoError(t, err)
 
 	out, err := exec.Command("apk", "info", "hansel-breadcrumb").CombinedOutput()
@@ -123,16 +123,33 @@ func TestGenerate_InstallAlpine(t *testing.T) {
 	assert.Contains(t, string(out), "hansel-breadcrumb-1.0.0")
 }
 
-func newCliContext(tb testing.TB) *urfave.Context {
+func newCliCommand(tb testing.TB) *urfave.Command {
 	tb.Helper()
 
-	flags := flag.NewFlagSet("", flag.ContinueOnError)
-	for _, f := range cli.GenerateFlags {
-		f.Apply(flags)
+	// In v3, we need to run the command with the flags to have them available
+	// We'll create a wrapper command that captures the parsed state
+	var capturedCmd *urfave.Command
+	wrapperCmd := &urfave.Command{
+		Name:  "test",
+		Flags: cli.GenerateFlags,
+		Action: func(ctx context.Context, c *urfave.Command) error {
+			capturedCmd = c
+			return nil
+		},
 	}
-	cliCtx := urfave.NewContext(nil, flags, nil)
-	cliCtx.Set(cli.FlagPkgName, "hansel-breadcrumb")
-	cliCtx.Set(cli.FlagPkgVersion, "1.0.0")
 
-	return cliCtx
+	// Run with test arguments
+	args := []string{
+		"test",
+		"--name", "hansel-breadcrumb",
+		"--version", "1.0.0",
+	}
+
+	err := wrapperCmd.Run(context.Background(), args)
+	if err != nil {
+		tb.Fatal(err)
+	}
+
+	// Return the command with parsed flags
+	return capturedCmd
 }
