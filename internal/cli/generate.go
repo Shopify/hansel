@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"context"
 	"fmt"
 	"log/slog"
 	"os"
@@ -12,7 +13,7 @@ import (
 	_ "github.com/goreleaser/nfpm/v2/apk"
 	_ "github.com/goreleaser/nfpm/v2/deb"
 	_ "github.com/goreleaser/nfpm/v2/rpm"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -66,42 +67,42 @@ var GenerateFlags = []cli.Flag{
 	},
 }
 
-func Generate(log *slog.Logger) func(ctx *cli.Context) error {
-	return func(ctx *cli.Context) error {
-		eg, _ := errgroup.WithContext(ctx.Context)
-		info := pkgInfo(ctx)
+func Generate(log *slog.Logger) func(ctx context.Context, cmd *cli.Command) error {
+	return func(ctx context.Context, cmd *cli.Command) error {
+		eg, _ := errgroup.WithContext(ctx)
+		info := pkgInfo(cmd)
 		if err := nfpm.Validate(info); err != nil {
 			return fmt.Errorf("validating package info: %w", err)
 		}
 
-		packagers := packagers(ctx)
+		packagers := packagers(cmd)
 		if len(packagers) == 0 {
 			return fmt.Errorf("no packager(s) specified")
 		}
 		for _, packager := range packagers {
 			pkger := packager
 			eg.Go(func() error {
-				info := pkgInfo(ctx)
-				return makePackage(ctx, log, info, pkger)
+				info := pkgInfo(cmd)
+				return makePackage(ctx, cmd, log, info, pkger)
 			})
 		}
 		return eg.Wait()
 	}
 }
 
-func pkgInfo(ctx *cli.Context) *nfpm.Info {
+func pkgInfo(cmd *cli.Command) *nfpm.Info {
 	return &nfpm.Info{
-		Name:        ctx.String(FlagPkgName),
-		Arch:        arch(ctx),
+		Name:        cmd.String(FlagPkgName),
+		Arch:        arch(cmd),
 		Platform:    "linux",
-		Version:     ctx.String(FlagPkgVersion),
-		Maintainer:  maintainer(ctx),
-		Description: ctx.String(pkgDescription),
+		Version:     cmd.String(FlagPkgVersion),
+		Maintainer:  maintainer(cmd),
+		Description: cmd.String(pkgDescription),
 	}
 }
 
-func arch(ctx *cli.Context) string {
-	if a := ctx.String(FlagPkgArch); a != "" {
+func arch(cmd *cli.Command) string {
+	if a := cmd.String(FlagPkgArch); a != "" {
 		return a
 	}
 	switch runtime.GOARCH {
@@ -112,8 +113,8 @@ func arch(ctx *cli.Context) string {
 	}
 }
 
-func maintainer(ctx *cli.Context) string {
-	if m := ctx.String(pkgMaintainer); m != "" {
+func maintainer(cmd *cli.Command) string {
+	if m := cmd.String(pkgMaintainer); m != "" {
 		return m
 	}
 	if u, ok := os.LookupEnv("USER"); ok {
@@ -122,16 +123,16 @@ func maintainer(ctx *cli.Context) string {
 	return ""
 }
 
-func packagers(ctx *cli.Context) []string {
+func packagers(cmd *cli.Command) []string {
 	var packagers []string
 	// If packager(s) are specified, use them
-	if ctx.Bool(FlagOutApk) {
+	if cmd.Bool(FlagOutApk) {
 		packagers = append(packagers, "apk")
 	}
-	if ctx.Bool(FlagOutDeb) {
+	if cmd.Bool(FlagOutDeb) {
 		packagers = append(packagers, "deb")
 	}
-	if ctx.Bool(FlagOutRpm) {
+	if cmd.Bool(FlagOutRpm) {
 		packagers = append(packagers, "rpm")
 	}
 	if len(packagers) > 0 {
@@ -139,7 +140,7 @@ func packagers(ctx *cli.Context) []string {
 	}
 
 	// If a filename is specified, guess packager from that:
-	if fn := ctx.String(FlagOutFilename); fn != "" {
+	if fn := cmd.String(FlagOutFilename); fn != "" {
 		switch filepath.Ext(fn) {
 		case ".apk":
 			packagers = append(packagers, "apk")
@@ -162,13 +163,13 @@ func packagers(ctx *cli.Context) []string {
 	return packagers
 }
 
-func makePackage(ctx *cli.Context, log *slog.Logger, info *nfpm.Info, packager string) error {
+func makePackage(ctx context.Context, cmd *cli.Command, log *slog.Logger, info *nfpm.Info, packager string) error {
 	pkger, err := nfpm.Get(packager)
 	if err != nil {
 		return fmt.Errorf("getting packager: %w", err)
 	}
 
-	fn := packageFn(ctx, pkger.ConventionalFileName(info))
+	fn := packageFn(cmd, pkger.ConventionalFileName(info))
 	log.Info("generating package", "filename", fn, "packager", packager, "arch", info.Arch)
 	f, err := os.OpenFile(fn, os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0600)
 	if err != nil {
@@ -180,7 +181,7 @@ func makePackage(ctx *cli.Context, log *slog.Logger, info *nfpm.Info, packager s
 		return fmt.Errorf("packaging: %w", err)
 	}
 
-	if !ctx.Bool(FlagInstall) {
+	if !cmd.Bool(FlagInstall) {
 		return nil
 	}
 
@@ -199,18 +200,18 @@ func makePackage(ctx *cli.Context, log *slog.Logger, info *nfpm.Info, packager s
 
 	log.Info("installing package", "command", installCmd)
 	//nolint:gosec
-	cmd := exec.CommandContext(ctx.Context, installCmd[0], installCmd[1:]...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
+	execCmd := exec.CommandContext(ctx, installCmd[0], installCmd[1:]...)
+	execCmd.Stdout = os.Stdout
+	execCmd.Stderr = os.Stderr
+	if err := execCmd.Run(); err != nil {
 		return fmt.Errorf("installing package: %w", err)
 	}
 	return nil
 }
 
-func packageFn(ctx *cli.Context, pkgerFn string) string {
-	dir := ctx.String(FlagOutDirectory)
-	fn := ctx.String(FlagOutFilename)
+func packageFn(cmd *cli.Command, pkgerFn string) string {
+	dir := cmd.String(FlagOutDirectory)
+	fn := cmd.String(FlagOutFilename)
 	if fn == "" {
 		return filepath.Join(dir, pkgerFn)
 	}

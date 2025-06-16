@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log/slog"
 	"os"
 
@@ -11,7 +12,7 @@ func main() {
 	log := slog.New(slog.NewTextHandler(os.Stderr, nil))
 
 	app := cli.NewApp(log)
-	if err := app.Run(os.Args); err != nil {
+	if err := app.Run(context.Background(), os.Args); err != nil {
 		log.Error("encountered error", "error", err)
 		os.Exit(1)
 	}
