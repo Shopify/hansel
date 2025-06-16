@@ -21,7 +21,7 @@ func TestGenerate_NoPackagers(t *testing.T) {
 	}
 	cmd := newCliCommand(t)
 
-	err := cli.Generate(slog.Default())(context.Background(), cmd)
+	err := cli.Generate(slog.Default())(t.Context(), cmd)
 	assert.EqualError(t, err, "no packager(s) specified")
 }
 
@@ -29,7 +29,7 @@ func TestGenerate_InvalidPackage(t *testing.T) {
 	cmd := newCliCommand(t)
 	cmd.Set(cli.FlagPkgName, "")
 
-	err := cli.Generate(slog.Default())(context.Background(), cmd)
+	err := cli.Generate(slog.Default())(t.Context(), cmd)
 	assert.EqualError(t, err, "validating package info: package name must be provided")
 }
 
@@ -43,7 +43,7 @@ func TestGenerate_Directory(t *testing.T) {
 	cmd.Set(cli.FlagOutRpm, "true")
 	cmd.Set(cli.FlagPkgArch, "amd64")
 
-	err := cli.Generate(slog.Default())(context.Background(), cmd)
+	err := cli.Generate(slog.Default())(t.Context(), cmd)
 	require.NoError(t, err)
 
 	dir, err := os.ReadDir(tmpDir)
@@ -70,7 +70,7 @@ func TestGenerate_Filename(t *testing.T) {
 	cmd.Set(cli.FlagOutFilename, "hansel-breadcrumb.apk")
 	cmd.Set(cli.FlagPkgArch, "amd64")
 
-	err := cli.Generate(slog.Default())(context.Background(), cmd)
+	err := cli.Generate(slog.Default())(t.Context(), cmd)
 	require.NoError(t, err)
 
 	dir, err := os.ReadDir(tmpDir)
@@ -95,7 +95,7 @@ func TestGenerate_InstallDebian(t *testing.T) {
 	cmd := newCliCommand(t)
 	cmd.Set(cli.FlagInstall, "true")
 
-	err := cli.Generate(slog.Default())(context.Background(), cmd)
+	err := cli.Generate(slog.Default())(t.Context(), cmd)
 	require.NoError(t, err)
 
 	out, err := exec.Command("dpkg", "-s", "hansel-breadcrumb").CombinedOutput()
@@ -114,7 +114,7 @@ func TestGenerate_InstallAlpine(t *testing.T) {
 	cmd := newCliCommand(t)
 	cmd.Set(cli.FlagInstall, "true")
 
-	err := cli.Generate(slog.Default())(context.Background(), cmd)
+	err := cli.Generate(slog.Default())(t.Context(), cmd)
 	require.NoError(t, err)
 
 	out, err := exec.Command("apk", "info", "hansel-breadcrumb").CombinedOutput()
