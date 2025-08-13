@@ -7,7 +7,7 @@ toolchain go1.24.1
 require (
 	github.com/goreleaser/nfpm/v2 v2.43.0
 	github.com/stretchr/testify v1.10.0
-	github.com/urfave/cli/v3 v3.3.8
+	github.com/urfave/cli/v3 v3.4.1
 	golang.org/x/sync v0.16.0
 )
 
