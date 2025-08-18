@@ -16,7 +16,7 @@ jobs:
       attestations: write
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # tag=v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # tag=v5.0.0
         with:
           fetch-depth: 0
       - name: Get latest Go version
@@ -32,7 +32,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
-        uses: goreleaser/goreleaser-action@9c156ee8a17a598857849441385a2041ef570552 # tag=v6.3.0
+        uses: goreleaser/goreleaser-action@e435ccd777264be153ace6237001ef4d979d3a7a # tag=v6.4.0
         with:
           distribution: goreleaser
           version: v2.0.1
