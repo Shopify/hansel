@@ -5,7 +5,7 @@ go 1.25
 require (
 	github.com/goreleaser/nfpm/v2 v2.43.4
 	github.com/stretchr/testify v1.11.1
-	github.com/urfave/cli/v3 v3.6.0
+	github.com/urfave/cli/v3 v3.6.1
 	golang.org/x/sync v0.18.0
 )
 
