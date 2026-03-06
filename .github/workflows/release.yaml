@@ -26,7 +26,7 @@ jobs:
         uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # tag=v6.3.0
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
-      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # tag=v3.7.0
+      - uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # tag=v4.0.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -46,6 +46,6 @@ jobs:
           mv dist/*.deb to_sign/
           mv dist/*.apk to_sign/
       - name: "Sign artifacts"
-        uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
+        uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4.1.0
         with:
           subject-path: "to_sign/*"
