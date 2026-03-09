@@ -1,12 +1,12 @@
 module github.com/Shopify/hansel
 
-go 1.25
+go 1.25.0
 
 require (
 	github.com/goreleaser/nfpm/v2 v2.45.0
 	github.com/stretchr/testify v1.11.1
 	github.com/urfave/cli/v3 v3.7.0
-	golang.org/x/sync v0.19.0
+	golang.org/x/sync v0.20.0
 )
 
 require (
