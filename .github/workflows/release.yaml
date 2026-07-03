@@ -26,7 +26,7 @@ jobs:
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # tag=v6.5.0
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
-      - uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # tag=v4.2.0
+      - uses: docker/login-action@c99871dec2022cc055c062a10cc1a1310835ceb4 # tag=v4.3.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
