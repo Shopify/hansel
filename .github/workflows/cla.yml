@@ -10,10 +10,18 @@ permissions: {}
 
 jobs:
   cla:
-    uses: Shopify/github-workflows/.github/workflows/cla.yaml@0b6f7f7def1c8f895fd31cd4183f98e3562458e9 # v0.2.0
+    runs-on: ubuntu-latest
+    if: |
+      (github.event.issue.pull_request
+        && !github.event.issue.pull_request.merged_at
+        && contains(github.event.comment.body, 'signed')
+      )
+      || (github.event.pull_request && !github.event.pull_request.merged)
     permissions:
-      actions: write
-      pull-requests: write
-    secrets:
-      token: ${{secrets.GITHUB_TOKEN}}
-      cla-token: ${{secrets.CLA_TOKEN}}
+      actions: write # to re-trigger workflows
+      pull-requests: write # to add/remove labels
+    steps:
+      - uses: Shopify/shopify-cla-action@9938f4b43524d1cfa7471ce9a803edf226697284 # v1.8.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cla-token: ${{ secrets.CLA_TOKEN }}
