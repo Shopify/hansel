@@ -23,7 +23,7 @@ jobs:
         id: gover
         run: echo goversion=$(grep "AS apk" Dockerfile.test | awk -F':|-' '!/^#/ {print $2}') >> "$GITHUB_OUTPUT"
       - name: Set up Go
-        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # tag=v7.0.0
+        uses: actions/setup-go@d8cbb8045d7f43706b9177cceb36c1f91a6644d5 # tag=v7.1.0
         with:
           go-version: "${{ steps.gover.outputs.goversion }}"
       - uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # tag=v4.8.0
